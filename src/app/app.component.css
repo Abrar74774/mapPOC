@@ -1,39 +1,48 @@
 body {
   height: 100%;
   width: 100%;
+  font-family: "Roboto", sans-serif;
 }
 
 .full-left {
-  font-family: "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica,
-    sans-serif;
-  font-size: 14px;
+  font-size: 15px;
   float: left;
   width: 100%;
   background-color: #eee;
 }
 
 .panel {
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  font-family: "Roboto";
   background-color: rgb(255, 255, 255);
-  padding: 10px 0px;
+  padding: 20px 0px;
   width: 100%;
-  font-family: sans-serif, Arial;
   font-size: 12px;
-  border-bottom: 2px solid rgb(58, 58, 59);
+  border-bottom: 2px solid #ddd;
 }
 
 .property {
-  padding: 3px;
-  margin: 5px;
+  font-size: 15px;
+  padding: 0px 10px;
+  margin-left: 5px;
+  width: auto;
+}
+mat-radio-button {
+  margin: 0 10px;
+}
+
+.property input {
+  margin: 0 60px;
 }
 
 .mapborder {
-  border-left: 2px solid #9c9c9c;
+  font-size: 15px;
+  border-left: 1px solid #ddd;
   padding: 10px;
 }
 
 b {
-  font-size: 14px;
   margin-right: 10px;
 }
 
@@ -42,18 +51,31 @@ b {
 }
 
 .button {
-  padding: 3px 15px 3px 15px;
+  padding: 8px 30px;
   background-color: rgb(255, 255, 255);
   font-size: 15px;
   color: black;
-  border: 1px solid rgb(58, 58, 59);
+  border: 2px solid #ddd;
+  position: relative;
 }
 
 .button:hover {
-  background-color: rgb(182, 196, 241);
+  background-color: #b6c4f1;
 }
 
 .clickedButton {
-  background-color: rgb(187, 222, 255);
-  border: 1px solid rgb(47, 50, 230);
+  background-color: #eaf5ff;
+  border: 2px solid rgb(47, 50, 230);
+  color: rgb(47, 50, 230);
+  z-index: 2;
+}
+
+@media screen and (max-width: 786px) {
+  .panel {
+    flex-direction: column;
+  }
+  .panel div {
+    border: none;
+    margin: 10px 5px;
+  }
 }

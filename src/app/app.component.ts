@@ -103,49 +103,49 @@ Highcharts.SVGRenderer.prototype.symbols.markerBalloon = function (x, y, w, h) {
 function dropMarkers(data, metric = "riskValue") {
   for (let i = 0; i < data.length; i++) {
     let rating = data[i][metric];
-    let color = 1;
+    let color = "#333";
     if (metric == "riskValue") {
       //Rag Scheme for 10 values
       switch (rating) {
         case 1:
-          color = 1;
+          color = "#16bf22";
           break;
         case 2:
-          color = 2;
+          color = "#21db2e";
           break;
         case 3:
-          color = 3;
+          color = "#5ef269";
           break;
         case 4:
-          color = 4;
+          color = "#ccf56c";
           break;
         case 5:
-          color = 5;
+          color = "#d0db1b";
           break;
         case 6:
-          color = 6;
+          color = "#f2f227";
           break;
         case 7:
-          color = 7;
+          color = "#f0d524";
           break;
         case 8:
-          color = 8;
+          color = "#f5d60a";
           break;
         case 9:
-          color = 9;
+          color = "#f5c827";
           break;
         case 10:
-          color = 10;
+          color = "#fcad00";
           break;
       }
     } else if (metric == "adjustedValue") {
       //Rag Scheme for max and min value
-      if (rating > 0) color = 11;
-      else color = 12;
+      if (rating > 0) color = "#ff0000";
+      else color = "#00ff00";
     }
     let marker = {
       symbol: "markerBalloon",
-      fillColor: "#1f5",
+      fillColor: color,
       lineColor: "#888",
       lineWidth: 1.5,
       radius: 12,
@@ -209,7 +209,7 @@ export class AppComponent implements OnInit {
       this.chartMap = {
         chart: {
           map: map,
-          backgroundColor: "#ebebeb",
+          backgroundColor: "#f7f9f9",
           events: {
             load: function () {
               const chart = this;
@@ -266,7 +266,6 @@ export class AppComponent implements OnInit {
             max: 10,
             maxColor: "#fcad00",
             minColor: "#16bf22",
-            showInLegend: true,
           },
         ],
 
@@ -276,58 +275,56 @@ export class AppComponent implements OnInit {
             stickyTracking: false,
             allowPointSelect: true,
             // cursor: 'pointer',
-            point: {
-              events: {
-                //On click event for markers
-                click: function (e) {
-                  console.log(this.series);
-                  // this.series.chart.update({
-                  //   tooltip: {
-                  //     enabled: true,
-                  //   },
-                  // });
-
-                  if (previousPoint) {
-                    previousPointMarkerURL = previousPointMarkerURL.replace(
-                      "-s.svg",
-                      ".svg"
-                    );
-                    previousPoint.update({
-                      marker: {
-                        symbol: previousPointMarkerURL,
-                      },
-                    });
-                  }
-
-                  previousPointMarkerURL =
-                    e.point.series.data[e.point.index]["marker"]["symbol"];
-                  previousPoint = this;
-                  let currentPointMarkerURL =
-                    e.point.series.data[e.point.index]["marker"]["symbol"];
-                  // currentPointMarkerURL = currentPointMarkerURL.replace(
-                  //   "d_map_pin_letter",
-                  //   "d_map_pin_icon"
-                  // );
-                  currentPointMarkerURL = currentPointMarkerURL.replace(
-                    ".svg",
-                    "-s.svg"
-                  );
-                  this.update({
-                    marker: {
-                      symbol: currentPointMarkerURL,
-                    },
-                  });
-                },
-
-                mouseOut: function () {
-                  this.series.chart.update({
-                    tooltip: {
-                      enabled: false,
-                    },
-                  });
-                },
-              },
-            },
+            //point: {
+            // events: {
+            //   // //On click event for markers
+            //   click: function (e) {
+            //     console.log(this.series);
+            //     this.series.chart.update({
+            //       tooltip: {
+            //         enabled: true,
+            //       },
+            //     });
+            //   },
+            //   if (previousPoint) {
+            //     previousPointMarkerURL = previousPointMarkerURL.replace(
+            //       "-s.svg",
+            //       ".svg"
+            //     );
+            //     previousPoint.update({
+            //       marker: {
+            //         symbol: previousPointMarkerURL,
+            //       },
+            //     });
+            //   }
+            //   previousPointMarkerURL =
+            //     e.point.series.data[e.point.index]["marker"]["symbol"];
+            //   previousPoint = this;
+            //   let currentPointMarkerURL =
+            //     e.point.series.data[e.point.index]["marker"]["symbol"];
+            //   // currentPointMarkerURL = currentPointMarkerURL.replace(
+            //   //   "d_map_pin_letter",
+            //   //   "d_map_pin_icon"
+            //   // );
+            //   currentPointMarkerURL = currentPointMarkerURL.replace(
+            //     ".svg",
+            //     "-s.svg"
+            //   );
+            //   this.update({
+            //     marker: {
+            //       symbol: currentPointMarkerURL,
+            //     },
+            //   });
+            // },
+            //   mouseOut: function () {
+            //     this.series.chart.update({
+            //       tooltip: {
+            //         enabled: false,
+            //       },
+            //     });
+            //   },
+            // },
+            //},
           },
         },
 
@@ -368,11 +365,21 @@ export class AppComponent implements OnInit {
           },
           {
             //Seties 3: Map Markers
+
             type: "mappoint",
             colorAxis: 0,
             allowPointSelect: true,
             name: "Properties",
             cursor: "pointer",
+            marker: {
+              states: {
+                select: {
+                  lineColor: "#1144ff",
+                  lineWidth: 3,
+                  fillColor: undefined,
+                },
+              },
+            },
           },
         ],
       };
@@ -409,7 +416,7 @@ export class AppComponent implements OnInit {
     self.updateFlag = true;
   }
 
-  updateMetric(event) {
+  updateMetric(currentButton) {
     previousPoint = null;
     var metric = "riskValue";
     var mapTitle = "Risk Score";
@@ -417,7 +424,7 @@ export class AppComponent implements OnInit {
     var maxVal = 10;
     var minColor = "#16bf22";
     var maxColor = "#fcad00";
-    if (event.target.attributes.id.nodeValue == "adjestedvalue") {
+    if (currentButton == "adjustedValue") {
       metric = "adjustedValue";
       mapTitle = "Adjusted Risk Value";
       minVal = -30;
@@ -425,22 +432,21 @@ export class AppComponent implements OnInit {
       minColor = "#ff0000";
       maxColor = "#00ff00";
     }
-    dropMarkers(data, metric);
-    const self = this,
-      chart = this.chart;
-    self.chartMap.series[2] = {
+
+    dropMarkers(data, currentButton);
+    this.chartMap.series[2] = {
       type: "mappoint",
       colorAxis: 0,
       allowPointSelect: true,
       name: "Properties",
       data: data,
     };
-    self.chartMap.legend.title.text = mapTitle;
-    self.chartMap.colorAxis[0].min = minVal;
-    self.chartMap.colorAxis[0].max = maxVal;
-    self.chartMap.colorAxis[0].maxColor = maxColor;
-    self.chartMap.colorAxis[0].minColor = minColor;
-    self.chartMap.subtitle.text = mapTitle;
-    self.updateFlag = true;
+    this.chartMap.legend.title.text = mapTitle;
+    this.chartMap.colorAxis[0].min = minVal;
+    this.chartMap.colorAxis[0].max = maxVal;
+    this.chartMap.colorAxis[0].maxColor = maxColor;
+    this.chartMap.colorAxis[0].minColor = minColor;
+    this.chartMap.subtitle.text = mapTitle;
+    this.updateFlag = true;
   }
 }

@@ -1,36 +1,45 @@
 <div class="panel">
-  <span class="property">
-    <b>Property</b>
-    <input
-      (click)="updateMetric($event)"
-      class="selectable"
-      type="radio"
-      id="riskscore"
-      name="property"
-      value="riskscore"
-      checked
-    />
-    <label for="riskscore">Risk Score</label>
-    <input
-      (click)="updateMetric($event)"
-      class="selectable"
-      type="radio"
-      id="adjestedvalue"
-      name="property"
-      value="adjestedvalue"
-    />
-    <label for="adjestedvalue">Adjusted Value at Risk</label>
-  </span>
+  <div class="property">
+    <span style="margin: 20px;">Property</span>
+    <mat-radio-group>
+      <mat-radio-button
+        (click)="updateMetric('riskValue')"
+        class="selectable"
+        id="riskscore"
+        name="property"
+        value="riskscore"
+        checked
+      >
+        Risk Score
+      </mat-radio-button>
+      <mat-radio-button
+        (click)="updateMetric('adjustedValue')"
+        class="selectable"
+        id="adjustedValue"
+        name="property"
+        value="adjustedValue"
+      >
+        Adjusted Value at risk
+      </mat-radio-button>
+    </mat-radio-group>
+  </div>
 
-  <span class="mapborder radio-toolbar">
-    <b>Map Border</b>
-    <span (click)="updateBorders($event)" class="button selectable" id="state"
+  <div class="mapborder radio-toolbar">
+    <span style="margin: 20px;">Map Border</span>
+    <span
+      (click)="updateBorders($event)"
+      class="button selectable clickedButton"
+      id="state"
       >State</span
     >
-    <span (click)="updateBorders($event)" class="button selectable" id="cbsa"
+    <span
+      (click)="updateBorders($event)"
+      style="right: 1px;"
+      class="button selectable"
+      id="cbsa"
       >CBSA</span
     >
-  </span>
+  </div>
 </div>
 
 <highcharts-chart

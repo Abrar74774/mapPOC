@@ -6,7 +6,8 @@ import { HttpClientModule } from "@angular/common/http";
 
 import { AppComponent } from "./app.component";
 import { HighchartsChartModule } from "highcharts-angular";
-
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { MatRadioModule } from "@angular/material/radio";
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -15,6 +16,8 @@ import { HighchartsChartModule } from "highcharts-angular";
     HighchartsChartModule,
     HttpModule,
     HttpClientModule,
+    BrowserAnimationsModule,
+    MatRadioModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
