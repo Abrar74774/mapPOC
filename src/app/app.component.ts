@@ -22,7 +22,6 @@ MapModule(Highcharts);
 ExportingModule(Highcharts);
 
 declare let require: any;
-console.log(Highcharts.SVGRenderer.prototype.symbols.circle);
 Highcharts.SVGRenderer.prototype.symbols.markerBalloon = function (x, y, w, h) {
   h = w * 1.3333;
   let px = w / 24.8;
@@ -152,7 +151,6 @@ function dropMarkers(data, metric = "riskValue") {
     };
     data[i]["marker"] = marker;
   }
-  console.log("dropped markers with", data);
 }
 
 //Data initialization
@@ -204,7 +202,6 @@ export class AppComponent implements OnInit {
         delete data[i]["propertyLongitude"];
       }
       dropMarkers(data);
-      console.log(data);
 
       this.chartMap = {
         chart: {
@@ -216,6 +213,12 @@ export class AppComponent implements OnInit {
               chart.series[2].setData(data);
             },
           },
+        },
+        xAxis: {
+          minRange: 5,
+        },
+        yAxis: {
+          minRange: 5,
         },
         title: {
           text: "State",
@@ -334,9 +337,9 @@ export class AppComponent implements OnInit {
           snap: 0,
           headerFormat: "",
           followPointer: false,
+          hideDelay: 1000,
           pointFormat:
             "<b>{point.propertyName}</b><br>Address: {point.propertyAddress}, {point.propertyCity}, {point.propertyState}<br>Zip Code: {point.propertyZipCode}<br>Lat: {point.lat}, Lon: {point.lon}<br>Risk Score: {point.riskValue}<br>Adjusted Risk Value: {point.adjustedValue}",
-          hideDelay: 3000,
         },
         credits: {
           enabled: false,
@@ -367,6 +370,22 @@ export class AppComponent implements OnInit {
             //Seties 3: Map Markers
 
             type: "mappoint",
+            events: {
+              mouseOver: function (e) {
+                this.chart.tooltip.update({
+                  enabled: false,
+                });
+              },
+              click: function (e) {
+                this.chart.tooltip.update({
+                  enabled: true,
+                });
+                this.chart.tooltip.refresh(e.point);
+              },
+              mouseOut: function () {
+                this.chart.tooltip.hide();
+              },
+            },
             colorAxis: 0,
             allowPointSelect: true,
             name: "Properties",
@@ -378,6 +397,9 @@ export class AppComponent implements OnInit {
                   lineWidth: 3,
                   fillColor: undefined,
                 },
+                hover: {
+                  radiusPlus: undefined,
+                },
               },
             },
           },
@@ -386,12 +408,20 @@ export class AppComponent implements OnInit {
     });
   }
 
+  stateSelected = true;
+  cbsaSelected = false;
+
   updateBorders(event) {
-    document.getElementById("state").classList.remove("clickedButton");
-    document.getElementById("cbsa").classList.remove("clickedButton");
-    document
-      .getElementById(event.target.attributes.id.nodeValue)
-      .classList.toggle("clickedButton");
+    // document.getElementById("state").classList.remove("clickedButton");
+    // document.getElementById("cbsa").classList.remove("clickedButton");
+    // document
+    //   .getElementById(event.target.attributes.id.nodeValue)
+    //   .classList.toggle("clickedButton");
+    if (event.target.className.search("clickedButton") == -1) {
+      this.stateSelected = !this.stateSelected;
+      this.cbsaSelected = !this.cbsaSelected;
+    }
+
     let borderColor = "#FFFFFF";
     let mapTitle = "State";
     if (event.target.attributes.id.nodeValue == "cbsa") {

@@ -28,7 +28,8 @@
     <span style="margin: 20px;">Map Border</span>
     <span
       (click)="updateBorders($event)"
-      class="button selectable clickedButton"
+      class="button selectable"
+      [ngClass]="{ clickedButton: stateSelected }"
       id="state"
       >State</span
     >
@@ -36,6 +37,7 @@
       (click)="updateBorders($event)"
       style="right: 1px;"
       class="button selectable"
+      [ngClass]="{ clickedButton: cbsaSelected }"
       id="cbsa"
       >CBSA</span
     >
